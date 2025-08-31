@@ -1,7 +1,9 @@
 export interface UserData {
   height: number | null;
   weight: number | null;
-  alcoholUnits: number;
+  beers: number;
+  wines: number;
+  cocktails: number;
 }
 
 export interface TestResult {

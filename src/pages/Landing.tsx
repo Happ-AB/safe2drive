@@ -8,7 +8,9 @@ export default function Landing() {
   const [userData, setUserData] = useLocalStorage<UserData>("userData", {
     height: null,
     weight: null,
-    alcoholUnits: 0,
+    beers: 0,
+    wines: 0,
+    cocktails: 0,
   });
 
   const isDataComplete = userData.height && userData.weight;
