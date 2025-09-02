@@ -45,7 +45,7 @@ export default function ReactionTest({ onComplete }: Props) {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [stage, trial, startTest, onComplete, navigate]); // Removed reactionTimes from deps
+  }, [stage, trial, startTest, onComplete, navigate, reactionTimes]); // Removed reactionTimes from deps
 
   const handleClick = () => {
     if (stage !== "active" || isCompletedRef.current) return;

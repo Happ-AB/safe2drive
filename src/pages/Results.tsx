@@ -19,7 +19,7 @@ export default function Results() {
     } else if (!reactionTimes) {
       navigate("/"); // Redirect if no reactionTimes
     }
-  }, [reactionTimes, navigate]); // Removed evaluateTest from deps
+  }, [reactionTimes, navigate, result, evaluateTest]); // Removed evaluateTest from deps
 
   if (!result) {
     return null; // Prevent rendering until result is set
