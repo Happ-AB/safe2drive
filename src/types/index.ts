@@ -11,3 +11,9 @@ export interface TestResult {
   retryAvailable: boolean;
   waitTime?: string;
 }
+
+export interface TestResult {
+  passed: boolean;
+  retryAvailable: boolean;
+  waitTime?: string;
+}

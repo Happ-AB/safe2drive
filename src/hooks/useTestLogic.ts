@@ -1,21 +1,16 @@
-import { useState } from "react";
 import type { TestResult } from "../types";
 
-// Placeholder test logic
-export function useTestLogic(alcoholUnits: number) {
-  const [result, setResult] = useState<TestResult | null>(null);
-
-  const runTest = () => {
-    // Mock test: Fail if more than 2 alcohol units
-    const passed = alcoholUnits <= 2;
-    const waitTime =
-      alcoholUnits > 2 ? `${alcoholUnits * 30} minutes` : undefined;
-    setResult({
+export function useTestLogic() {
+  const evaluateTest = (reactionTimes: number[]): TestResult => {
+    const averageTime =
+      reactionTimes.reduce((sum, time) => sum + time, 0) / reactionTimes.length;
+    const passed = averageTime < 500; // Pass if avg < 500ms
+    return {
       passed,
       retryAvailable: !passed,
-      waitTime,
-    });
+      waitTime: passed ? undefined : "30 minutes",
+    };
   };
 
-  return { result, runTest };
+  return { evaluateTest };
 }
