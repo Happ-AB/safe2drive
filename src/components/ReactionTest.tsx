@@ -5,7 +5,7 @@ interface Props {
   onComplete: (reactionTimes: number[]) => void;
 }
 
-export default function ReactionTest({ onComplete }: Props) {
+export default function ReactionTest(props: Props) {
   const [stage, setStage] = useState<"waiting" | "active" | "clicked">(
     "waiting"
   );
@@ -33,10 +33,10 @@ export default function ReactionTest({ onComplete }: Props) {
 
   useEffect(() => {
     if (trial > 3 && !isCompletedRef.current) {
-      isCompletedRef.current = true; // Mark as completed
+      isCompletedRef.current = true;
       if (timerRef.current) clearTimeout(timerRef.current);
-      onComplete(reactionTimes);
-      navigate("/results", { state: { reactionTimes } }); // Pass reactionTimes instead
+      props.onComplete(reactionTimes);
+      navigate("/results", { state: { reactionTimes } });
       return;
     }
     if (stage === "waiting" && !isCompletedRef.current) {
@@ -45,7 +45,7 @@ export default function ReactionTest({ onComplete }: Props) {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [stage, trial, startTest, onComplete, navigate, reactionTimes]); // Removed reactionTimes from deps
+  }, [stage, trial, startTest, navigate, reactionTimes, props]);
 
   const handleClick = () => {
     if (stage !== "active" || isCompletedRef.current) return;
@@ -60,11 +60,11 @@ export default function ReactionTest({ onComplete }: Props) {
   };
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center bg-gray-100">
-      {stage === "waiting" && (
-        <p className="text-xl">
+    <div className="relative w-full h-screen flex items-center justify-center bg-gray-100 flex-col">
+      {trial < 2 && stage === "waiting" && (
+        <div className="text-xl self-center w-60 p-4 bg-blue-600 text-white font-semibold rounded-lg">
           Get ready... Click the circle when it appears!
-        </p>
+        </div>
       )}
       {stage === "active" && (
         <div
@@ -74,12 +74,9 @@ export default function ReactionTest({ onComplete }: Props) {
         />
       )}
       {stage === "clicked" && (
-        <p className="text-xl">
+        <div className="text-xl w-60 p-4 bg-gray-400 text-white font-semibold rounded-lg text-center">
           Good! {trial < 3 ? `${3 - trial} more to go.` : "Test complete!"}
-        </p>
-      )}
-      {trial <= 3 && (
-        <p className="absolute top-4 left-4 text-lg">Trial {trial}/3</p>
+        </div>
       )}
     </div>
   );
