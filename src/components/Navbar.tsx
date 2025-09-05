@@ -5,7 +5,9 @@ import { clearLocalStorage } from "../hooks/useLocalStorage";
 export default function Navbar() {
   return (
     <nav className="bg-blue-600 p-4 flex justify-between items-center">
-      <h1 className="text-white text-lg font-semibold">Safe2Drive</h1>
+      <h1 className="text-white text-lg font-semibold">
+        <Link to="/">Safe2Drive</Link>
+      </h1>
       {process.env.NODE_ENV === "development" && (
         <button
           className="text-white bg-gray-400 p-2 rounded"
