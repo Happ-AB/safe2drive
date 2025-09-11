@@ -25,54 +25,99 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
   const removeCocktail = () => {
     setUserData({ ...userData, cocktails: userData.cocktails - 1 });
   };
+  const justAte = () => {
+    setUserData({ ...userData, meal: true });
+  };
+  const didNotEat = () => {
+    setUserData({ ...userData, meal: false });
+  };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md mt-4">
-      <h2 className="text-lg font-semibold mb-4">Select Drinks Consumed</h2>
-      <div className="flex justify-between">
-        <div className="flex flex-col w-12">
-          <button onClick={addBeer} className={SmallCTA}>
-            +
-          </button>
-          <span className="text-3xl my-3 self-center">🍺</span>
-          <button
-            onClick={removeBeer}
-            className={SmallCTA}
-            disabled={!userData.beers || userData.beers < 1}
-          >
-            -
-          </button>
-          <p className="mt-4 text-center">{userData.beers}</p>
-        </div>
-        <div className="flex flex-col w-12">
-          <button onClick={addWine} className={SmallCTA}>
-            +
-          </button>
-          <span className="text-3xl my-3 self-center">🍷</span>
-          <button
-            onClick={removeWine}
-            className={SmallCTA}
-            disabled={!userData.wines || userData.wines < 1}
-          >
-            -
-          </button>
-          <p className="mt-4 text-center">{userData.wines}</p>
-        </div>
-        <div className="flex flex-col w-12">
-          <button onClick={addCocktail} className={SmallCTA}>
-            +
-          </button>
-          <span className="text-3xl my-3 self-center">🍸</span>
-          <button
-            onClick={removeCocktail}
-            className={SmallCTA}
-            disabled={!userData.cocktails || userData.cocktails < 1}
-          >
-            -
-          </button>
-          <p className="mt-4 text-center">{userData.cocktails}</p>
+    <>
+      <div className="p-4 bg-white rounded-lg shadow-md mt-4">
+        <h2 className="text-lg font-semibold mb-4">Select Drinks Consumed</h2>
+        <div className="flex justify-between">
+          <div className="flex flex-col w-12">
+            <button onClick={addBeer} className={SmallCTA}>
+              +
+            </button>
+            <span className="text-3xl my-3 self-center">🍺</span>
+            <button
+              onClick={removeBeer}
+              className={SmallCTA}
+              disabled={!userData.beers || userData.beers < 1}
+            >
+              -
+            </button>
+            <p className="mt-4 text-center">{userData.beers}</p>
+          </div>
+          <div className="flex flex-col w-12">
+            <button onClick={addWine} className={SmallCTA}>
+              +
+            </button>
+            <span className="text-3xl my-3 self-center">🍷</span>
+            <button
+              onClick={removeWine}
+              className={SmallCTA}
+              disabled={!userData.wines || userData.wines < 1}
+            >
+              -
+            </button>
+            <p className="mt-4 text-center">{userData.wines}</p>
+          </div>
+          <div className="flex flex-col w-12">
+            <button onClick={addCocktail} className={SmallCTA}>
+              +
+            </button>
+            <span className="text-3xl my-3 self-center">🍸</span>
+            <button
+              onClick={removeCocktail}
+              className={SmallCTA}
+              disabled={!userData.cocktails || userData.cocktails < 1}
+            >
+              -
+            </button>
+            <p className="mt-4 text-center">{userData.cocktails}</p>
+          </div>
         </div>
       </div>
-    </div>
+      <div>
+        <div className="p-4 bg-white rounded-lg shadow-md mt-4">
+          <h2 className="text-lg font-semibold mb-4 text-center">
+            Did You Eat?
+          </h2>
+          <div className="flex justify-between">
+            <button
+              onClick={justAte}
+              className={SmallCTA}
+              style={{
+                border: userData.meal ? "none" : "1px solid blue",
+                color: userData.meal ? "white" : "blue",
+                backgroundColor: userData.meal ? "green" : "white",
+                fontWeight: userData.meal ? "bold" : "normal",
+                width: "5rem",
+                marginRight: "1rem",
+              }}
+            >
+              Yes
+            </button>
+            <button
+              onClick={didNotEat}
+              className={SmallCTA}
+              style={{
+                border: !userData.meal ? "none" : "1px solid blue",
+                color: !userData.meal ? "white" : "blue",
+                backgroundColor: !userData.meal ? "red" : "white",
+                fontWeight: !userData.meal ? "bold" : "normal",
+                width: "5rem",
+                marginLeft: "1rem",
+              }}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

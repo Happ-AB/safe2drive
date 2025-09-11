@@ -1,20 +1,22 @@
 import { useState } from "react";
-import type { UserData } from "../types";
+import type { Gender, UserData } from "../types";
 
 interface Props {
   userData: UserData;
   setUserData: (data: UserData) => void;
 }
 
-export default function HeightWeightInput({ userData, setUserData }: Props) {
-  const [height, setHeight] = useState(userData.height || "");
+export default function PersonalInput({ userData, setUserData }: Props) {
+  const [age, setAge] = useState(userData.age || "");
   const [weight, setWeight] = useState(userData.weight || "");
+  const [gender, setGender] = useState(userData.gender || undefined);
 
   const handleSave = () => {
     setUserData({
       ...userData,
-      height: Number(height),
+      age: Number(age),
       weight: Number(weight),
+      gender,
     });
   };
 
@@ -22,24 +24,34 @@ export default function HeightWeightInput({ userData, setUserData }: Props) {
     <div className="p-4 bg-white rounded-lg shadow-md">
       <h2 className="text-lg font-semibold mb-4">Enter Your Details</h2>
       <div className="mb-4">
-        <label className="block text-sm font-medium">Height (cm)</label>
         <input
           type="number"
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
           className="mt-1 p-2 border rounded w-full"
-          placeholder="e.g., 170"
+          placeholder="Age"
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium">Weight (kg)</label>
         <input
           type="number"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
           className="mt-1 p-2 border rounded w-full"
-          placeholder="e.g., 70"
+          placeholder="Weight (kg)"
         />
+      </div>
+      <div className="mb-4">
+        <select
+          value={gender}
+          onChange={(e) => setGender(e.target.value as Gender)}
+          className="mt-1 p-2 border rounded w-full"
+        >
+          <option value="">Select Gender</option>
+          <option value="male">♂</option>
+          <option value="female">♀</option>
+          <option value="other">⚤</option>
+        </select>
       </div>
       <button
         onClick={handleSave}

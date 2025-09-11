@@ -1,9 +1,11 @@
 export interface UserData {
-  height: number | null;
-  weight: number | null;
+  age: number;
+  weight: number;
+  gender: Gender;
   beers: number;
   wines: number;
   cocktails: number;
+  meal: boolean;
 }
 
 export interface TestResult {
@@ -17,3 +19,4 @@ export interface TestResult {
   retryAvailable: boolean;
   waitTime?: string;
 }
+export type Gender = "♂" | "♀" | "⚤" | undefined;

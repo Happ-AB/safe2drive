@@ -1,19 +1,21 @@
 import { Link } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import HeightWeightInput from "../components/HeightWeightInput";
+import HeightWeightInput from "../components/PersonalInput";
 import AlcoholSelector from "../components/AlcoholSelector";
 import type { UserData } from "../types";
 
 export default function Landing() {
   const [userData, setUserData] = useLocalStorage<UserData>("userData", {
-    height: null,
-    weight: null,
+    age: 0,
+    weight: 0,
+    gender: undefined,
     beers: 0,
     wines: 0,
     cocktails: 0,
+    meal: false,
   });
 
-  const isDataComplete = userData.height && userData.weight;
+  const isDataComplete = userData.age && userData.weight;
 
   return (
     <div className="p-4 flex flex-col items-center max-w-md mx-auto">
