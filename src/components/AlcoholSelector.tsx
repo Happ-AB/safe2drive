@@ -35,7 +35,7 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
   return (
     <>
       <div className="p-4 bg-white rounded-lg shadow-md mt-4">
-        <h2 className="text-lg font-semibold mb-4">Select Drinks Consumed</h2>
+        <h2 className="text-lg font-semibold mb-4">How much did you drink?</h2>
         <div className="flex justify-between">
           <div className="flex flex-col w-12">
             <button onClick={addBeer} className={SmallCTA}>
@@ -81,41 +81,35 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
           </div>
         </div>
       </div>
-      <div>
-        <div className="p-4 bg-white rounded-lg shadow-md mt-4">
-          <h2 className="text-lg font-semibold mb-4 text-center">
-            Did You Eat?
-          </h2>
-          <div className="flex justify-between">
-            <button
-              onClick={justAte}
-              className={SmallCTA}
-              style={{
-                border: userData.meal ? "none" : "1px solid blue",
-                color: userData.meal ? "white" : "blue",
-                backgroundColor: userData.meal ? "green" : "white",
-                fontWeight: userData.meal ? "bold" : "normal",
-                width: "5rem",
-                marginRight: "1rem",
-              }}
-            >
-              Yes
-            </button>
-            <button
-              onClick={didNotEat}
-              className={SmallCTA}
-              style={{
-                border: !userData.meal ? "none" : "1px solid blue",
-                color: !userData.meal ? "white" : "blue",
-                backgroundColor: !userData.meal ? "red" : "white",
-                fontWeight: !userData.meal ? "bold" : "normal",
-                width: "5rem",
-                marginLeft: "1rem",
-              }}
-            >
-              No
-            </button>
-          </div>
+      <div className="p-4 bg-white rounded-lg shadow-md mt-4 w-full">
+        <h2 className="text-lg font-semibold mb-4 text-center">Did You Eat?</h2>
+        <div className="flex justify-between">
+          <button
+            onClick={justAte}
+            className={SmallCTA}
+            style={{
+              border: userData.meal ? "none" : "1px solid blue",
+              color: userData.meal ? "white" : "blue",
+              backgroundColor: userData.meal ? "green" : "white",
+              fontWeight: userData.meal ? "bold" : "normal",
+              width: "5rem",
+            }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={didNotEat}
+            className={SmallCTA}
+            style={{
+              border: !userData.meal ? "none" : "1px solid blue",
+              color: !userData.meal ? "white" : "blue",
+              backgroundColor: !userData.meal ? "red" : "white",
+              fontWeight: !userData.meal ? "bold" : "normal",
+              width: "5rem",
+            }}
+          >
+            No
+          </button>
         </div>
       </div>
     </>
