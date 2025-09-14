@@ -3,7 +3,6 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import HeightWeightInput from "../components/PersonalInput";
 import AlcoholSelector from "../components/AlcoholSelector";
 import type { UserData } from "../types";
-import { bacCalculator } from "../helpers/functions";
 
 export default function Landing() {
   const [userData, setUserData] = useLocalStorage<UserData>("userData", {
@@ -17,17 +16,6 @@ export default function Landing() {
   });
 
   const isDataComplete = userData.age && userData.weight;
-
-  console.log(
-    "promillehalt: ",
-    bacCalculator(
-      userData.age,
-      userData.gender,
-      userData.meal,
-      userData.beers + userData.wines + userData.cocktails,
-      userData.weight
-    )
-  );
 
   return (
     <div className="p-4 flex flex-col items-center max-w-md mx-auto">

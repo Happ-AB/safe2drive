@@ -20,3 +20,7 @@ export interface TestResult {
   waitTime?: string;
 }
 export type Gender = "♂" | "♀" | "⚤" | undefined;
+
+export const PermittedLimit = {
+  GLOBAL: 0.2,
+} as const;
