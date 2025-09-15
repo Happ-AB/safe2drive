@@ -20,6 +20,7 @@ export default function ResultCard({ result, onRetry }: Props) {
     if (result.passed && bac < PermittedLimit.GLOBAL) {
       return "green";
     } else if (!result.passed && bac > PermittedLimit.GLOBAL) {
+      localStorage.setItem("failTime", Date.now().toString());
       return "red";
     } else {
       return "orange";

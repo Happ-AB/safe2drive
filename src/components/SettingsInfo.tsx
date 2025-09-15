@@ -1,4 +1,4 @@
-import { clearLocalStorage } from "../hooks/useLocalStorage";
+import { clearLocalStorage } from "../helpers/functions";
 
 export default function SettingsInfo() {
   const handleResetData = () => {

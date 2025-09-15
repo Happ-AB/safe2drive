@@ -12,8 +12,3 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
   return [value, setValue] as const;
 }
-
-export function clearLocalStorage() {
-  localStorage.clear();
-  window.location.reload();
-}

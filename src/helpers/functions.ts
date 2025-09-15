@@ -16,7 +16,11 @@ export const bacCalculator = (
   if (meal) {
     bac *= 0.7;
   }
-  // round to 2 decimals
   bac = Math.round(bac * 100) / 100;
   return Math.max(0, bac);
 };
+
+export function clearLocalStorage() {
+  localStorage.clear();
+  window.location.reload();
+}

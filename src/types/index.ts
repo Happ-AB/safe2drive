@@ -24,3 +24,5 @@ export type Gender = "♂" | "♀" | "⚤" | undefined;
 export const PermittedLimit = {
   GLOBAL: 0.2,
 } as const;
+
+export const minutesBeforeRetryTest = 30;
