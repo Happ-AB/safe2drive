@@ -3,6 +3,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import HeightWeightInput from "../components/PersonalInput";
 import AlcoholSelector from "../components/AlcoholSelector";
 import type { UserData } from "../types";
+import Button from "../components/ui/Button";
 
 export default function Landing() {
   const [userData, setUserData] = useLocalStorage<UserData>("userData", {
@@ -24,11 +25,10 @@ export default function Landing() {
       ) : (
         <>
           <AlcoholSelector userData={userData} setUserData={setUserData} />
-          <Link
-            to="/start"
-            className="mt-4 w-full bg-blue-600 text-white py-2 rounded text-center"
-          >
-            Start Test
+          <Link to="/start" className="w-full mt-4">
+            <Button variant="primary" fullWidth>
+              Start Test
+            </Button>
           </Link>
         </>
       )}
