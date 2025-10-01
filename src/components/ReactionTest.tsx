@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Card from "./ui/Card";
+import Button from "./ui/Button";
 
 interface Props {
   onComplete: (reactionTimes: number[]) => void;
@@ -60,23 +62,28 @@ export default function ReactionTest(props: Props) {
   };
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center bg-gray-100 flex-col">
+    <div className="relative w-full h-screen flex items-center justify-center flex-col text-foreground">
       {trial < 2 && stage === "waiting" && (
-        <div className="text-xl self-center w-60 p-4 bg-blue-600 text-white font-semibold rounded-lg">
+        <Card className="text-base md:text-lg self-center w-72 p-4 text-center animate-fade-in">
           Get ready... Click the circle when it appears!
-        </div>
+        </Card>
       )}
       {stage === "active" && (
         <div
-          className="w-20 h-20 bg-blue-600 rounded-full cursor-pointer"
-          style={{ position: "absolute", left: position.x, top: position.y }}
+          className="w-20 h-20 rounded-full cursor-pointer shadow-glow"
+          style={{
+            position: "absolute",
+            left: position.x,
+            top: position.y,
+            background: "radial-gradient(circle at 30% 30%, #60a5fa, #2563eb)",
+          }}
           onClick={handleClick}
         />
       )}
       {stage === "clicked" && (
-        <div className="text-xl w-60 p-4 bg-gray-400 text-white font-semibold rounded-lg text-center">
+        <Card className="text-base md:text-lg w-72 p-4 text-center">
           Good! {trial < 3 ? `${3 - trial} more to go.` : "Test complete!"}
-        </div>
+        </Card>
       )}
     </div>
   );

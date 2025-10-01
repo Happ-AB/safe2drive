@@ -1,4 +1,8 @@
 import { useState } from "react";
+import Card from "./ui/Card";
+import Input from "./ui/Input";
+import Select from "./ui/Select";
+import Button from "./ui/Button";
 import type { Gender, UserData } from "../types";
 
 interface Props {
@@ -21,44 +25,37 @@ export default function PersonalInput({ userData, setUserData }: Props) {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <Card className="p-6 animate-slide-up">
       <h2 className="text-lg font-semibold mb-4">Enter Your Details</h2>
-      <div className="mb-4">
-        <input
+      <div className="space-y-4">
+        <Input
           type="number"
           value={age}
           onChange={(e) => setAge(e.target.value)}
-          className="mt-1 p-2 border rounded w-full"
           placeholder="Age"
+          fullWidth
         />
-      </div>
-      <div className="mb-4">
-        <input
+        <Input
           type="number"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          className="mt-1 p-2 border rounded w-full"
           placeholder="Weight (kg)"
+          fullWidth
         />
-      </div>
-      <div className="mb-4">
-        <select
+        <Select
           value={gender}
           onChange={(e) => setGender(e.target.value as Gender)}
-          className="mt-1 p-2 border rounded w-full"
+          fullWidth
         >
           <option value="">Select Gender</option>
-          <option value="male">♂</option>
-          <option value="female">♀</option>
-          <option value="other">⚤</option>
-        </select>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </Select>
+        <Button onClick={handleSave} variant="primary" fullWidth>
+          Save
+        </Button>
       </div>
-      <button
-        onClick={handleSave}
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-      >
-        Save
-      </button>
-    </div>
+    </Card>
   );
 }

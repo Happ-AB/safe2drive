@@ -9,15 +9,17 @@ import Settings from "./pages/Settings";
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className="min-h-screen flex flex-col text-foreground">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/start" element={<StartInfo />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/results" element={<Results />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
+        <main className="flex-1 container py-6 md:py-10 animate-fade-in">
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/start" element={<StartInfo />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );

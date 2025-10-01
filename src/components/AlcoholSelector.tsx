@@ -1,5 +1,6 @@
 import type { UserData } from "../types";
-import { SmallCTA } from "./styles";
+import Card from "./ui/Card";
+import Button from "./ui/Button";
 
 interface Props {
   userData: UserData;
@@ -34,84 +35,78 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
 
   return (
     <>
-      <div className="p-4 bg-white rounded-lg shadow-md mt-4">
+      <Card className="mt-4 p-6">
         <h2 className="text-lg font-semibold mb-4">How much did you drink?</h2>
-        <div className="flex justify-between">
-          <div className="flex flex-col w-12">
-            <button onClick={addBeer} className={SmallCTA}>
-              +
-            </button>
-            <span className="text-3xl my-3 self-center">🍺</span>
-            <button
-              onClick={removeBeer}
-              className={SmallCTA}
-              disabled={!userData.beers || userData.beers < 1}
-            >
-              -
-            </button>
-            <p className="mt-4 text-center">{userData.beers}</p>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="flex flex-col items-center">
+            <div className="flex gap-2">
+              <Button onClick={addBeer} size="sm" variant="primary">
+                +
+              </Button>
+              <Button
+                onClick={removeBeer}
+                size="sm"
+                disabled={!userData.beers || userData.beers < 1}
+              >
+                -
+              </Button>
+            </div>
+            <span className="text-4xl my-3">🍺</span>
+            <p className="mt-1 text-muted">{userData.beers}</p>
           </div>
-          <div className="flex flex-col w-12">
-            <button onClick={addWine} className={SmallCTA}>
-              +
-            </button>
-            <span className="text-3xl my-3 self-center">🍷</span>
-            <button
-              onClick={removeWine}
-              className={SmallCTA}
-              disabled={!userData.wines || userData.wines < 1}
-            >
-              -
-            </button>
-            <p className="mt-4 text-center">{userData.wines}</p>
+          <div className="flex flex-col items-center">
+            <div className="flex gap-2">
+              <Button onClick={addWine} size="sm" variant="primary">
+                +
+              </Button>
+              <Button
+                onClick={removeWine}
+                size="sm"
+                disabled={!userData.wines || userData.wines < 1}
+              >
+                -
+              </Button>
+            </div>
+            <span className="text-4xl my-3">🍷</span>
+            <p className="mt-1 text-muted">{userData.wines}</p>
           </div>
-          <div className="flex flex-col w-12">
-            <button onClick={addCocktail} className={SmallCTA}>
-              +
-            </button>
-            <span className="text-3xl my-3 self-center">🍸</span>
-            <button
-              onClick={removeCocktail}
-              className={SmallCTA}
-              disabled={!userData.cocktails || userData.cocktails < 1}
-            >
-              -
-            </button>
-            <p className="mt-4 text-center">{userData.cocktails}</p>
+          <div className="flex flex-col items-center">
+            <div className="flex gap-2">
+              <Button onClick={addCocktail} size="sm" variant="primary">
+                +
+              </Button>
+              <Button
+                onClick={removeCocktail}
+                size="sm"
+                disabled={!userData.cocktails || userData.cocktails < 1}
+              >
+                -
+              </Button>
+            </div>
+            <span className="text-4xl my-3">🍸</span>
+            <p className="mt-1 text-muted">{userData.cocktails}</p>
           </div>
         </div>
-      </div>
-      <div className="p-4 bg-white rounded-lg shadow-md mt-4 w-full">
+      </Card>
+      <Card className="mt-4 p-6 w-full">
         <h2 className="text-lg font-semibold mb-4 text-center">Did You Eat?</h2>
-        <div className="flex justify-between">
-          <button
+        <div className="flex items-center justify-center gap-4">
+          <Button
             onClick={justAte}
-            className={SmallCTA}
-            style={{
-              border: userData.meal ? "none" : "1px solid blue",
-              color: userData.meal ? "white" : "blue",
-              backgroundColor: userData.meal ? "green" : "white",
-              fontWeight: userData.meal ? "bold" : "normal",
-              width: "5rem",
-            }}
+            variant={userData.meal ? "primary" : "default"}
+            className="w-20"
           >
             Yes
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={didNotEat}
-            className={SmallCTA}
-            style={{
-              border: !userData.meal ? "none" : "1px solid blue",
-              color: !userData.meal ? "white" : "blue",
-              backgroundColor: !userData.meal ? "red" : "white",
-              fontWeight: !userData.meal ? "bold" : "normal",
-              width: "5rem",
-            }}
+            variant={!userData.meal ? "danger" : "default"}
+            className="w-20"
           >
             No
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
     </>
   );
 }

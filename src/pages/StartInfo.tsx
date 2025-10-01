@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Countdown from "../components/Countdown";
 import { minutesBeforeRetryTest } from "../types";
+import Card from "../components/ui/Card";
+import Button from "../components/ui/Button";
 
 export default function StartInfo() {
   const [ready, setReady] = useState(false);
@@ -18,9 +20,9 @@ export default function StartInfo() {
       ) : (
         <>
           <h1 className="text-2xl font-bold mb-4">Get Ready</h1>
-          <div className="bg-white p-4 rounded-lg shadow-md text-center">
+          <Card className="p-6 text-center animate-slide-up">
             <h2 className="text-lg font-semibold mb-2">How It Works</h2>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-muted mb-4">
               The test will assess your reaction time and coordination. Follow
               the on-screen instructions carefully.
             </p>
@@ -41,14 +43,11 @@ export default function StartInfo() {
                 more minutes
               </h2>
             ) : (
-              <button
-                onClick={handleStart}
-                className="w-full bg-blue-600 text-white py-2 rounded"
-              >
+              <Button onClick={handleStart} variant="primary" fullWidth>
                 Start Test
-              </button>
+              </Button>
             )}
-          </div>
+          </Card>
         </>
       )}
     </div>
