@@ -26,7 +26,6 @@ export default function StartInfo() {
               The test will assess your reaction time and coordination. Follow
               the on-screen instructions carefully.
             </p>
-            <p className="text-sm font-semibold mb-4">Ready?</p>
             {failTime &&
             Date.now() - +failTime < minutesBeforeRetryTest * 60 * 1000 ? (
               <h2 className="text-lg font-semibold m-4 bg-red-500 text-white p-2 rounded-md">
@@ -43,9 +42,12 @@ export default function StartInfo() {
                 more minutes
               </h2>
             ) : (
-              <Button onClick={handleStart} variant="primary" fullWidth>
-                Start Test
-              </Button>
+              <>
+                <p className="text-sm font-semibold mb-4">Ready?</p>
+                <Button onClick={handleStart} variant="primary" fullWidth>
+                  Start Test
+                </Button>
+              </>
             )}
           </Card>
         </>

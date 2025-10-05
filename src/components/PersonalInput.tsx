@@ -46,6 +46,7 @@ export default function PersonalInput({ userData, setUserData }: Props) {
           value={gender}
           onChange={(e) => setGender(e.target.value as Gender)}
           fullWidth
+          className="border rounded-md p-2 w-full text-base focus:outline-none focus:ring-2 focus:ring-primary transition"
         >
           <option value="">Select Gender</option>
           <option value="male">Male</option>

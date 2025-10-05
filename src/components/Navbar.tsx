@@ -8,7 +8,7 @@ export default function Navbar() {
         <div className="card px-4 py-2 flex items-center justify-between">
           <h1 className="text-base md:text-lg font-semibold tracking-tight">
             <Link to="/" className="hover:opacity-90 transition-opacity">
-              Fit2Drive
+              <img src="/logo.png" alt="logo" className="h-5" />
             </Link>
           </h1>
           <div className="flex items-center gap-3">

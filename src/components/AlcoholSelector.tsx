@@ -40,9 +40,6 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
         <div className="grid grid-cols-3 gap-6">
           <div className="flex flex-col items-center">
             <div className="flex gap-2">
-              <Button onClick={addBeer} size="sm" variant="primary">
-                +
-              </Button>
               <Button
                 onClick={removeBeer}
                 size="sm"
@@ -50,15 +47,15 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
               >
                 -
               </Button>
+              <Button onClick={addBeer} size="sm" variant="primary">
+                +
+              </Button>
             </div>
             <span className="text-4xl my-3">🍺</span>
             <p className="mt-1 text-muted">{userData.beers}</p>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex gap-2">
-              <Button onClick={addWine} size="sm" variant="primary">
-                +
-              </Button>
               <Button
                 onClick={removeWine}
                 size="sm"
@@ -66,21 +63,24 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
               >
                 -
               </Button>
+              <Button onClick={addWine} size="sm" variant="primary">
+                +
+              </Button>
             </div>
             <span className="text-4xl my-3">🍷</span>
             <p className="mt-1 text-muted">{userData.wines}</p>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex gap-2">
-              <Button onClick={addCocktail} size="sm" variant="primary">
-                +
-              </Button>
               <Button
                 onClick={removeCocktail}
                 size="sm"
                 disabled={!userData.cocktails || userData.cocktails < 1}
               >
                 -
+              </Button>
+              <Button onClick={addCocktail} size="sm" variant="primary">
+                +
               </Button>
             </div>
             <span className="text-4xl my-3">🍸</span>

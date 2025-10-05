@@ -21,7 +21,14 @@ export default function Landing() {
   return (
     <div className="p-4 flex flex-col items-center max-w-md mx-auto">
       {!isDataComplete ? (
-        <HeightWeightInput userData={userData} setUserData={setUserData} />
+        <>
+          <img
+            src="/fit2drive-logo.png"
+            alt="logo"
+            style={{ width: "50%", marginBottom: "3rem" }}
+          />
+          <HeightWeightInput userData={userData} setUserData={setUserData} />
+        </>
       ) : (
         <>
           <AlcoholSelector userData={userData} setUserData={setUserData} />
