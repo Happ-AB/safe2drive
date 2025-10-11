@@ -29,6 +29,21 @@ export default function ResultCard({ result, onRetry }: Props) {
       return "orange";
     }
   };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      await navigator.share({
+        title: "SafeDrive",
+        text: "Check out SafeDrive to test your driving fitness!",
+        url: window.location.href,
+      });
+    } else {
+      alert(
+        "Share not supported via localhost. Copy link: " + window.location.href
+      );
+    }
+  };
+
   return (
     <Card className="p-6 text-center animate-slide-up">
       {resultOutcomes() === "green" ? (
@@ -37,9 +52,6 @@ export default function ResultCard({ result, onRetry }: Props) {
             Safe to Drive!
           </h2>
           <p className="mt-2 text-muted">You're making smart choices.</p>
-          <Button className="mt-4" variant="primary">
-            Share App
-          </Button>
         </>
       ) : resultOutcomes() === "orange" ? (
         <>
@@ -75,6 +87,9 @@ export default function ResultCard({ result, onRetry }: Props) {
           </div>
         </>
       )}
+      <Button className="mt-4" variant="primary" onClick={handleShare}>
+        Share App
+      </Button>
     </Card>
   );
 }

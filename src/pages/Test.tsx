@@ -1,4 +1,4 @@
-import ReactionTest from "../components/ReactionTest";
+import ReactionTest from "../components/reaction-tests/ReactionTest";
 import { useTestLogic } from "../hooks/useTestLogic";
 
 export default function Test() {
