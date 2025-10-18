@@ -69,9 +69,21 @@ export default function ResultCard({ result, onRetry }: Props) {
           )}
           <p className="mt-2 font-semibold my-4">OR</p>
           <div className="mt-4 flex flex-col gap-2">
-            <a href="https://www.uber.com" target="_blank" className="btn">
+            <button
+              onClick={() => {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                const isAndroid = /Android/.test(navigator.userAgent);
+
+                if (isIOS || isAndroid) {
+                  window.location.href = "bolt://";
+                } else {
+                  window.open("https://bolt.eu/sv-se/", "_blank");
+                }
+              }}
+              className="btn"
+            >
               Book a Ride
-            </a>
+            </button>
           </div>
         </>
       )}
