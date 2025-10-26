@@ -1,4 +1,5 @@
-import ReactionTest from "../components/ReactionTest";
+import DecisionTest from "../components/DecisionTest";
+//import ReactionTest from "../components/ReactionTest";
 import { useTestLogic } from "../hooks/useTestLogic";
 
 export default function Test() {
@@ -6,7 +7,8 @@ export default function Test() {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <ReactionTest onComplete={evaluateTest} />
+      {/* <ReactionTest onComplete={evaluateTest} /> */}
+      <DecisionTest onComplete={evaluateTest} />
     </div>
   );
 }
