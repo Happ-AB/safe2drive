@@ -1,4 +1,4 @@
-import DecisionTest from "../components/DecisionTest";
+import DecisionTest from "../components/games/DecisionTest";
 //import ReactionTest from "../components/ReactionTest";
 import { useTestLogic } from "../hooks/useTestLogic";
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "./ui/Card";
-import Button from "./ui/Button";
+import Card from "../ui/Card";
+import Button from "../ui/Button";
 
 interface Props {
   onComplete: (decisionTimes: number[]) => void;
@@ -43,7 +43,6 @@ const scenarios: Scenario[] = [
 
 export default function DecisionTest(props: Props) {
   const [currentScenario, setCurrentScenario] = useState(0);
-  const [decisionTimes, setDecisionTimes] = useState<number[]>([]);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(3000);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -52,10 +51,60 @@ export default function DecisionTest(props: Props) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
   const isCompletedRef = useRef(false);
+  const decisionTimesRef = useRef<number[]>([]);
+  const currentScenarioRef = useRef(0);
+  const hasTimedOutRef = useRef(false);
+
+  const moveToNext = useCallback(
+    (times?: number[]) => {
+      const timesToUse = times || decisionTimesRef.current;
+      if (currentScenarioRef.current + 1 >= scenarios.length) {
+        if (!isCompletedRef.current) {
+          isCompletedRef.current = true;
+          props.onComplete(timesToUse);
+          navigate("/results", { state: { reactionTimes: timesToUse } });
+        }
+      } else {
+        setCurrentScenario((prev) => {
+          const next = prev + 1;
+          currentScenarioRef.current = next;
+          return next;
+        });
+      }
+    },
+    [navigate, props]
+  );
+
+  const handleTimeout = useCallback(() => {
+    if (hasTimedOutRef.current) return; // Prevent double execution
+    hasTimedOutRef.current = true;
+
+    // Record max time as penalty
+    const updatedTimes = [
+      ...decisionTimesRef.current,
+      scenarios[currentScenarioRef.current].timeLimit + 1000,
+    ];
+    decisionTimesRef.current = updatedTimes;
+    setShowFeedback(true);
+
+    console.log(
+      "Timeout for scenario",
+      currentScenarioRef.current,
+      "Times:",
+      updatedTimes
+    );
+
+    setTimeout(() => {
+      moveToNext(updatedTimes);
+    }, 1500);
+  }, [moveToNext]);
 
   const startScenario = useCallback(() => {
+    console.log("Starting scenario", currentScenarioRef.current);
+
+    hasTimedOutRef.current = false; // Reset timeout flag for new scenario
     setStartTime(Date.now());
-    setTimeLeft(scenarios[currentScenario].timeLimit);
+    setTimeLeft(scenarios[currentScenarioRef.current].timeLimit);
     setSelectedOption(null);
     setShowFeedback(false);
 
@@ -71,19 +120,7 @@ export default function DecisionTest(props: Props) {
       });
     }, 100);
     countdownRef.current = interval;
-  }, [currentScenario]);
-
-  const handleTimeout = () => {
-    // Record max time as penalty
-    setDecisionTimes((prev) => [
-      ...prev,
-      scenarios[currentScenario].timeLimit + 1000,
-    ]);
-    setShowFeedback(true);
-    setTimeout(() => {
-      moveToNext();
-    }, 1500);
-  };
+  }, [handleTimeout]);
 
   const handleChoice = (option: string) => {
     if (showFeedback || !startTime) return;
@@ -91,34 +128,31 @@ export default function DecisionTest(props: Props) {
     if (countdownRef.current) clearInterval(countdownRef.current);
 
     const decisionTime = Date.now() - startTime;
-    setDecisionTimes((prev) => [...prev, decisionTime]);
+    const updatedTimes = [...decisionTimesRef.current, decisionTime];
+    decisionTimesRef.current = updatedTimes;
     setSelectedOption(option);
     setShowFeedback(true);
 
     setTimeout(() => {
-      moveToNext();
+      moveToNext(updatedTimes);
     }, 1000);
   };
 
-  const moveToNext = () => {
-    if (currentScenario + 1 >= scenarios.length) {
-      if (!isCompletedRef.current) {
-        isCompletedRef.current = true;
-        props.onComplete(decisionTimes);
-        navigate("/results", { state: { decisionTimes } });
-      }
-    } else {
-      setCurrentScenario((prev) => prev + 1);
-    }
-  };
-
   useEffect(() => {
+    currentScenarioRef.current = currentScenario;
     if (!isCompletedRef.current && currentScenario < scenarios.length) {
+      // Clear any existing intervals before starting new scenario
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+        countdownRef.current = null;
+      }
       startScenario();
     }
     return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      if (countdownRef.current) clearInterval(countdownRef.current);
+      const timer = timerRef.current;
+      const countdown = countdownRef.current;
+      if (timer) clearTimeout(timer);
+      if (countdown) clearInterval(countdown);
     };
   }, [currentScenario, startScenario]);
 
