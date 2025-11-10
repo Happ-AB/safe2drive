@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "./ui/Card";
-import Button from "./ui/Button";
 
 interface Props {
   onComplete: (reactionTimes: number[]) => void;
