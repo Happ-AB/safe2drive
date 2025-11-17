@@ -1,11 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Countdown from "../components/Countdown";
 import { minutesBeforeRetryTest } from "../types";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 
+// Available test types
+const availableTests = [
+  { name: "Reaction Test", key: "reaction" },
+  { name: "Decision Test", key: "decision" },
+  // Add future tests here
+];
+
 export default function StartInfo() {
   const [ready, setReady] = useState(false);
+  const [selectedTest, setSelectedTest] = useState<{
+    name: string;
+    key: string;
+  } | null>(null);
+
+  useEffect(() => {
+    // Randomly select a test when component mounts
+    const randomIndex = Math.floor(Math.random() * availableTests.length);
+    const test = availableTests[randomIndex];
+    setSelectedTest(test);
+    // Store in localStorage so Test page can use it
+    localStorage.setItem("selectedTest", JSON.stringify(test));
+    console.log("Selected test:", test.name);
+  }, []);
 
   const handleStart = () => {
     setReady(true);
@@ -16,7 +37,7 @@ export default function StartInfo() {
   return (
     <div className="p-4 flex flex-col items-center max-w-md mx-auto h-full">
       {ready ? (
-        <Countdown onComplete={() => {}} />
+        <Countdown onComplete={() => {}} testName={selectedTest?.name} />
       ) : (
         <>
           <h1 className="text-2xl font-bold mb-4">Get Ready</h1>
