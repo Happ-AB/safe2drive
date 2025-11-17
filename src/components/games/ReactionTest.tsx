@@ -23,8 +23,8 @@ export default function ReactionTest(props: Props) {
   const startTest = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      const maxX = window.innerWidth - 100;
-      const maxY = window.innerHeight - 100;
+      const maxX = window.innerWidth - 200;
+      const maxY = window.innerHeight - 200;
       setPosition({
         x: Math.random() * maxX,
         y: Math.random() * maxY,
