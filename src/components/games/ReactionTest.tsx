@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "./ui/Card";
+import Card from "../ui/Card";
+import { TestConfig, type TestScore } from "../../types";
 
 interface Props {
-  onComplete: (reactionTimes: number[]) => void;
+  onComplete: (testScore: TestScore) => void;
 }
 
 export default function ReactionTest(props: Props) {
@@ -13,6 +14,7 @@ export default function ReactionTest(props: Props) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [startTime, setStartTime] = useState<number | null>(null);
   const [reactionTimes, setReactionTimes] = useState<number[]>([]);
+  const [lastReactionTime, setLastReactionTime] = useState<number | null>(null);
   const [trial, setTrial] = useState(1);
   const navigate = useNavigate();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -36,8 +38,18 @@ export default function ReactionTest(props: Props) {
     if (trial > 3 && !isCompletedRef.current) {
       isCompletedRef.current = true;
       if (timerRef.current) clearTimeout(timerRef.current);
-      props.onComplete(reactionTimes);
-      navigate("/results", { state: { reactionTimes } });
+
+      // Create TestScore object
+      const averageTime =
+        reactionTimes.reduce((sum, t) => sum + t, 0) / reactionTimes.length;
+      const testScore: TestScore = {
+        times: reactionTimes,
+        averageTime,
+        testType: "reaction",
+      };
+
+      props.onComplete(testScore);
+      navigate("/results", { state: { testScore } });
       return;
     }
     if (stage === "waiting" && !isCompletedRef.current) {
@@ -53,11 +65,12 @@ export default function ReactionTest(props: Props) {
     if (timerRef.current) clearTimeout(timerRef.current);
     const reactionTime = Date.now() - (startTime || 0);
     setReactionTimes((prev) => [...prev, reactionTime]);
+    setLastReactionTime(reactionTime);
     setStage("clicked");
     setTimeout(() => {
       setStage("waiting");
       setTrial((prev) => prev + 1);
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -79,9 +92,19 @@ export default function ReactionTest(props: Props) {
           onClick={handleClick}
         />
       )}
-      {stage === "clicked" && (
-        <Card className="text-base md:text-lg w-72 p-4 text-center">
-          Good! {trial < 3 ? `${3 - trial} more to go.` : "Test complete!"}
+      {stage === "clicked" && lastReactionTime !== null && (
+        <Card className="text-base md:text-lg w-72 p-4 text-center space-y-2">
+          <div className="text-2xl font-bold">{lastReactionTime}ms</div>
+          {lastReactionTime < TestConfig.reaction.passThreshold ? (
+            <div className="text-green-400 font-semibold">✓ Good reaction!</div>
+          ) : (
+            <div className="text-red-400 font-semibold">✗ Too slow</div>
+          )}
+          {trial < 3 ? (
+            <div className="text-sm text-gray-400">{3 - trial} more to go</div>
+          ) : (
+            <div className="text-sm">Test complete!</div>
+          )}
         </Card>
       )}
     </div>

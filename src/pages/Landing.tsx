@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import HeightWeightInput from "../components/PersonalInput";
 import AlcoholSelector from "../components/AlcoholSelector";
@@ -15,6 +16,11 @@ export default function Landing() {
     cocktails: 0,
     meal: false,
   });
+
+  // Reset retry count when starting a new session
+  useEffect(() => {
+    localStorage.setItem("retryCount", "0");
+  }, []);
 
   const isDataComplete = userData.age && userData.weight;
 

@@ -4,9 +4,10 @@ import Card from "./ui/Card";
 
 interface Props {
   onComplete: () => void;
+  testName?: string;
 }
 
-export default function Countdown({ onComplete }: Props) {
+export default function Countdown({ onComplete, testName = "Test" }: Props) {
   const [count, setCount] = useState(3);
   const navigate = useNavigate();
 
@@ -32,7 +33,9 @@ export default function Countdown({ onComplete }: Props) {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="mt-3 text-sm text-muted">Starting reaction test...</p>
+        <p className="mt-3 text-sm text-muted">
+          Starting {testName.toLowerCase()}...
+        </p>
       </Card>
     </div>
   );
