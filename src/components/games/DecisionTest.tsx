@@ -2,14 +2,16 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
+import { TestConfig, type TestScore } from "../../types";
 
 interface Props {
-  onComplete: (decisionTimes: number[]) => void;
+  onComplete: (testScore: TestScore) => void;
 }
 
 interface Scenario {
   situation: string;
   options: string[];
+  correctAnswer: string;
   timeLimit: number; // in milliseconds
 }
 
@@ -17,27 +19,32 @@ const scenarios: Scenario[] = [
   {
     situation: "Traffic light turns yellow as you approach",
     options: ["Stop", "Speed up", "Maintain speed"],
-    timeLimit: 3000,
+    correctAnswer: "Stop",
+    timeLimit: 4000,
   },
   {
     situation: "Pedestrian waiting at unmarked crosswalk",
     options: ["Stop and yield", "Slow down", "Continue"],
-    timeLimit: 3000,
+    correctAnswer: "Stop and yield",
+    timeLimit: 4000,
   },
   {
     situation: "Car ahead brakes suddenly",
     options: ["Brake hard", "Change lane", "Honk"],
-    timeLimit: 3000,
+    correctAnswer: "Brake hard",
+    timeLimit: 4000,
   },
   {
     situation: "Emergency vehicle siren behind you",
     options: ["Pull over right", "Speed up", "Stop immediately"],
-    timeLimit: 3000,
+    correctAnswer: "Pull over right",
+    timeLimit: 4000,
   },
   {
     situation: "School zone with children visible",
     options: ["Slow to 20 mph", "Maintain speed", "Stop"],
-    timeLimit: 3000,
+    correctAnswer: "Slow to 20 mph",
+    timeLimit: 4000,
   },
 ];
 
@@ -47,11 +54,13 @@ export default function DecisionTest(props: Props) {
   const [timeLeft, setTimeLeft] = useState(3000);
   const [showFeedback, setShowFeedback] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
   const isCompletedRef = useRef(false);
   const decisionTimesRef = useRef<number[]>([]);
+  const correctAnswersRef = useRef(0);
   const currentScenarioRef = useRef(0);
   const hasTimedOutRef = useRef(false);
 
@@ -61,8 +70,20 @@ export default function DecisionTest(props: Props) {
       if (currentScenarioRef.current + 1 >= scenarios.length) {
         if (!isCompletedRef.current) {
           isCompletedRef.current = true;
-          props.onComplete(timesToUse);
-          navigate("/results", { state: { reactionTimes: timesToUse } });
+
+          // Create TestScore object
+          const averageTime =
+            timesToUse.reduce((sum, t) => sum + t, 0) / timesToUse.length;
+          const testScore: TestScore = {
+            times: timesToUse,
+            averageTime,
+            correctAnswers: correctAnswersRef.current,
+            totalQuestions: scenarios.length,
+            testType: "decision",
+          };
+
+          props.onComplete(testScore);
+          navigate("/results", { state: { testScore } });
         }
       } else {
         setCurrentScenario((prev) => {
@@ -79,19 +100,20 @@ export default function DecisionTest(props: Props) {
     if (hasTimedOutRef.current) return; // Prevent double execution
     hasTimedOutRef.current = true;
 
-    // Record max time as penalty
-    const updatedTimes = [
-      ...decisionTimesRef.current,
-      scenarios[currentScenarioRef.current].timeLimit + 1000,
-    ];
+    // Record time limit + timeout penalty for no answer
+    const penaltyTime =
+      scenarios[currentScenarioRef.current].timeLimit +
+      TestConfig.decision.timeoutPenalty;
+    const updatedTimes = [...decisionTimesRef.current, penaltyTime];
     decisionTimesRef.current = updatedTimes;
     setShowFeedback(true);
+    setIsCorrect(false);
 
     console.log(
       "Timeout for scenario",
       currentScenarioRef.current,
-      "Times:",
-      updatedTimes
+      "- Penalty time:",
+      penaltyTime
     );
 
     setTimeout(() => {
@@ -106,6 +128,7 @@ export default function DecisionTest(props: Props) {
     setStartTime(Date.now());
     setTimeLeft(scenarios[currentScenarioRef.current].timeLimit);
     setSelectedOption(null);
+    setIsCorrect(null);
     setShowFeedback(false);
 
     // Countdown timer
@@ -127,11 +150,36 @@ export default function DecisionTest(props: Props) {
 
     if (countdownRef.current) clearInterval(countdownRef.current);
 
-    const decisionTime = Date.now() - startTime;
+    const currentScenarioData = scenarios[currentScenarioRef.current];
+    const correct = option === currentScenarioData.correctAnswer;
+
+    // Track correct answers
+    if (correct) {
+      correctAnswersRef.current += 1;
+    }
+
+    // Calculate time with penalty for wrong answers
+    let decisionTime = Date.now() - startTime;
+    if (!correct) {
+      decisionTime += TestConfig.decision.wrongAnswerPenalty;
+    }
+
     const updatedTimes = [...decisionTimesRef.current, decisionTime];
     decisionTimesRef.current = updatedTimes;
     setSelectedOption(option);
+    setIsCorrect(correct);
     setShowFeedback(true);
+
+    console.log(
+      "Scenario",
+      currentScenarioRef.current,
+      "- Answer:",
+      option,
+      "- Correct:",
+      correct,
+      "- Time:",
+      decisionTime
+    );
 
     setTimeout(() => {
       moveToNext(updatedTimes);
@@ -199,7 +247,9 @@ export default function DecisionTest(props: Props) {
               disabled={showFeedback}
               className={`w-full ${
                 showFeedback && selectedOption === option
-                  ? "bg-green-600 hover:bg-green-600"
+                  ? isCorrect
+                    ? "bg-green-600 hover:bg-green-600"
+                    : "bg-red-600 hover:bg-red-600"
                   : ""
               }`}
             >
@@ -210,11 +260,15 @@ export default function DecisionTest(props: Props) {
 
         {/* Feedback */}
         {showFeedback && (
-          <div className="text-center text-sm">
+          <div className="text-center text-sm font-semibold">
             {selectedOption ? (
-              <p className="text-green-400">Decision made!</p>
+              isCorrect ? (
+                <p className="text-green-400">✓ Correct!</p>
+              ) : (
+                <p className="text-red-400">✗ Wrong answer</p>
+              )
             ) : (
-              <p className="text-red-400">Time's up!</p>
+              <p className="text-red-400">⏱ Time's up!</p>
             )}
           </div>
         )}
