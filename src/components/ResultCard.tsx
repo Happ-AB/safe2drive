@@ -19,8 +19,30 @@ export default function ResultCard({ result, onRetry }: Props) {
     inputs.weight
   );
 
+  // Get retry count from localStorage
+  const retryCount = parseInt(localStorage.getItem("retryCount") || "0", 10);
+  const maxRetries = 3;
+  const retriesLeft = maxRetries - retryCount;
+  const canRetry = retryCount < maxRetries;
+
+  const handleRetry = () => {
+    if (canRetry) {
+      // Increment retry count
+      localStorage.setItem("retryCount", (retryCount + 1).toString());
+
+      if (retryCount + 1 >= maxRetries) {
+        // Lock the app for 30 minutes after max retries
+        localStorage.setItem("failTime", Date.now().toString());
+      }
+
+      onRetry();
+    }
+  };
+
   const resultOutcomes = () => {
     if (result.passed && bac < PermittedLimit.GLOBAL) {
+      // Reset retry count on successful pass
+      localStorage.setItem("retryCount", "0");
       return "green";
     } else if (!result.passed && bac > PermittedLimit.GLOBAL) {
       localStorage.setItem("failTime", Date.now().toString());
@@ -48,9 +70,42 @@ export default function ResultCard({ result, onRetry }: Props) {
           </h2>
           <p className="mt-2 font-semibold my-4">Take a short rest</p>
           <p className="mt-2 font-semibold my-4">OR</p>
-          <Button onClick={onRetry} variant="primary">
-            Try Different Test
-          </Button>
+          {canRetry ? (
+            <>
+              <Button onClick={handleRetry} variant="primary">
+                Try Different Test ({retriesLeft}{" "}
+                {retriesLeft === 1 ? "try" : "tries"} left)
+              </Button>
+              {retriesLeft === 1 && (
+                <p className="mt-2 text-xs text-yellow-400">
+                  After this attempt, you'll need to wait 30 minutes
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <p className="mt-2 text-sm text-red-400">
+                Maximum attempts reached. Please wait 30 minutes.
+              </p>
+              <div className="mt-4 flex flex-col gap-2">
+                <button
+                  onClick={() => {
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                    const isAndroid = /Android/.test(navigator.userAgent);
+
+                    if (isIOS || isAndroid) {
+                      window.location.href = "bolt://";
+                    } else {
+                      window.open("https://bolt.eu/sv-se/", "_blank");
+                    }
+                  }}
+                  className="btn"
+                >
+                  Book a Ride
+                </button>
+              </div>
+            </>
+          )}
         </>
       ) : (
         <>

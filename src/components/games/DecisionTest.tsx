@@ -18,13 +18,13 @@ interface Scenario {
 const scenarios: Scenario[] = [
   {
     situation: "Traffic light turns yellow as you approach",
-    options: ["Stop", "Speed up", "Maintain speed"],
+    options: ["Speed up", "Stop", "Maintain speed"],
     correctAnswer: "Stop",
     timeLimit: 4000,
   },
   {
     situation: "Pedestrian waiting at unmarked crosswalk",
-    options: ["Stop and yield", "Slow down", "Continue"],
+    options: ["Continue", "Slow down", "Stop and yield"],
     correctAnswer: "Stop and yield",
     timeLimit: 4000,
   },
@@ -36,13 +36,13 @@ const scenarios: Scenario[] = [
   },
   {
     situation: "Emergency vehicle siren behind you",
-    options: ["Pull over right", "Speed up", "Stop immediately"],
+    options: ["Stop immediately", "Speed up", "Pull over right"],
     correctAnswer: "Pull over right",
     timeLimit: 4000,
   },
   {
     situation: "School zone with children visible",
-    options: ["Slow to 20 mph", "Maintain speed", "Stop"],
+    options: ["Maintain speed", "Slow to 20 mph", "Stop"],
     correctAnswer: "Slow to 20 mph",
     timeLimit: 4000,
   },
