@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import DecisionTest from "../components/games/DecisionTest";
 import ReactionTest from "../components/games/ReactionTest";
+import StroopTest from "../components/games/StroopTest";
 import { useTestLogic } from "../hooks/useTestLogic";
 import type { TestScore } from "../types";
 
@@ -11,6 +12,7 @@ const testComponents: Record<
 > = {
   reaction: ReactionTest,
   decision: DecisionTest,
+  stroop: StroopTest,
   // Add future tests here:
   // memory: MemoryTest,
   // coordination: CoordinationTest,

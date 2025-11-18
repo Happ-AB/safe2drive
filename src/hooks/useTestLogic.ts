@@ -11,6 +11,9 @@ export function useTestLogic() {
     } else if (testScore.testType === "decision") {
       // For decision tests: check if average time is under threshold
       passed = testScore.averageTime < TestConfig.decision.passThreshold;
+    } else if (testScore.testType === "stroop") {
+      // For stroop tests: check if average time is under threshold
+      passed = testScore.averageTime < TestConfig.stroop.passThreshold;
     }
 
     console.log("Test evaluation:", {

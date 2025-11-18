@@ -8,6 +8,7 @@ import Button from "../components/ui/Button";
 const availableTests = [
   { name: "Reaction Test", key: "reaction" },
   { name: "Decision Test", key: "decision" },
+  { name: "Stroop Test", key: "stroop" },
   // Add future tests here
 ];
 

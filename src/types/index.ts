@@ -16,7 +16,7 @@ export interface TestResult {
 
 export type Gender = "♂" | "♀" | "⚤" | undefined;
 
-export type TestType = "reaction" | "decision";
+export type TestType = "reaction" | "decision" | "stroop";
 
 export interface TestScore {
   times: number[]; // Raw times or times with penalties
@@ -40,6 +40,11 @@ export const TestConfig = {
   decision: {
     passThreshold: 3000, // ms - average decision time must be under this
     wrongAnswerPenalty: 2000, // ms - added to decision time for wrong answers
+    timeoutPenalty: 1000, // ms - added to time limit for timeouts
+  },
+  stroop: {
+    passThreshold: 2500, // ms - average response time must be under this
+    wrongAnswerPenalty: 1500, // ms - penalty for choosing wrong color
     timeoutPenalty: 1000, // ms - added to time limit for timeouts
   },
 } as const;
