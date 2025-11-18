@@ -36,7 +36,9 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
   return (
     <>
       <Card className="mt-4 p-6">
-        <h2 className="text-lg font-semibold mb-4">How much did you drink?</h2>
+        <h2 className="text-lg font-semibold mb-4 text-center">
+          How much did you drink?
+        </h2>
         <div className="grid grid-cols-3 gap-6">
           <div className="flex flex-col items-center">
             <div className="flex gap-2">

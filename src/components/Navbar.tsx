@@ -1,7 +1,17 @@
-import { Link } from "react-router-dom";
-import { CogIcon } from "@heroicons/react/24/outline";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { CogIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function Navbar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isSettingsPage = location.pathname === "/settings";
+
+  const handleIconClick = () => {
+    if (isSettingsPage) {
+      navigate(-1); // Go back to previous route
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-40">
       <div className="container py-3">
@@ -12,9 +22,18 @@ export default function Navbar() {
             </Link>
           </h1>
           <div className="flex items-center gap-3">
-            <Link to="/settings" className="btn btn-primary h-9 px-3">
-              <CogIcon className="h-5 w-5" />
-            </Link>
+            {isSettingsPage ? (
+              <button
+                onClick={handleIconClick}
+                className="btn btn-primary h-9 px-3"
+              >
+                <ArrowLeftIcon className="h-5 w-5" />
+              </button>
+            ) : (
+              <Link to="/settings" className="btn btn-primary h-9 px-3">
+                <CogIcon className="h-5 w-5" />
+              </Link>
+            )}
           </div>
         </div>
       </div>
