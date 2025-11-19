@@ -9,6 +9,7 @@ const availableTests = [
   { name: "Reaction Test", key: "reaction" },
   { name: "Decision Test", key: "decision" },
   { name: "Stroop Test", key: "stroop" },
+  { name: "Pattern Test", key: "pattern" },
   // Add future tests here
 ];
 

@@ -14,6 +14,12 @@ export function useTestLogic() {
     } else if (testScore.testType === "stroop") {
       // For stroop tests: check if average time is under threshold
       passed = testScore.averageTime < TestConfig.stroop.passThreshold;
+    } else if (testScore.testType === "pattern") {
+      // For pattern tests: must get all answers correct AND be under time threshold
+      const allCorrect = testScore.correctAnswers === testScore.totalQuestions;
+      const withinTime =
+        testScore.averageTime < TestConfig.pattern.passThreshold;
+      passed = allCorrect && withinTime;
     }
 
     console.log("Test evaluation:", {
