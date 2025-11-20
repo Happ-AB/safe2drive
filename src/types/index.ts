@@ -16,7 +16,12 @@ export interface TestResult {
 
 export type Gender = "♂" | "♀" | "⚤" | undefined;
 
-export type TestType = "reaction" | "decision" | "stroop" | "pattern";
+export type TestType =
+  | "reaction"
+  | "decision"
+  | "stroop"
+  | "pattern"
+  | "dual-task";
 
 export interface TestScore {
   times: number[]; // Raw times or times with penalties
@@ -51,5 +56,9 @@ export const TestConfig = {
     passThreshold: 3500, // ms - average prediction time must be under this
     wrongAnswerPenalty: 2000, // ms - penalty for wrong prediction
     timeoutPenalty: 1000, // ms - added to time limit for timeouts
+  },
+  "dual-task": {
+    passThreshold: 1500, // Combined score (rhythm consistency + challenge response time)
+    minCorrectAnswers: 3, // Minimum correct challenges out of ~5 total
   },
 } as const;

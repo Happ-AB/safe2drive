@@ -20,6 +20,14 @@ export function useTestLogic() {
       const withinTime =
         testScore.averageTime < TestConfig.pattern.passThreshold;
       passed = allCorrect && withinTime;
+    } else if (testScore.testType === "dual-task") {
+      // For dual-task tests: must maintain rhythm consistency AND respond correctly to challenges
+      const withinTime =
+        testScore.averageTime < TestConfig["dual-task"].passThreshold;
+      const enoughCorrect =
+        (testScore.correctAnswers || 0) >=
+        TestConfig["dual-task"].minCorrectAnswers;
+      passed = withinTime && enoughCorrect;
     }
 
     console.log("Test evaluation:", {

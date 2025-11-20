@@ -10,6 +10,7 @@ const availableTests = [
   { name: "Decision Test", key: "decision" },
   { name: "Stroop Test", key: "stroop" },
   { name: "Pattern Test", key: "pattern" },
+  { name: "Dual Task Test", key: "dual-task" },
   // Add future tests here
 ];
 

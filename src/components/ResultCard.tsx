@@ -25,6 +25,11 @@ export default function ResultCard({ result, onRetry }: Props) {
   const retriesLeft = maxRetries - retryCount;
   const canRetry = retryCount < maxRetries;
 
+  // Get dual-task breakdown if available
+  const dualTaskBreakdown = localStorage.getItem("dualTaskBreakdown")
+    ? JSON.parse(localStorage.getItem("dualTaskBreakdown")!)
+    : null;
+
   const handleRetry = () => {
     if (canRetry) {
       // Increment retry count
@@ -68,6 +73,44 @@ export default function ResultCard({ result, onRetry }: Props) {
 
   return (
     <Card className="p-6 text-center animate-slide-up">
+      {/* Dual Task Score Breakdown */}
+      {dualTaskBreakdown && (
+        <div className="mb-4 p-4 bg-gray-800 rounded-lg text-left text-sm">
+          <h3 className="font-semibold text-blue-400 mb-2">Test Breakdown:</h3>
+          <div className="space-y-1 text-gray-300">
+            <p>
+              🎯 Rhythm Consistency:{" "}
+              <span className="font-semibold">
+                {dualTaskBreakdown.rhythmScore}ms
+              </span>
+            </p>
+            <p>
+              ⚡ Avg Challenge Speed:{" "}
+              <span className="font-semibold">
+                {dualTaskBreakdown.challengeScore}ms
+              </span>
+            </p>
+            <p className="pt-2 border-t border-gray-700">
+              📊 Combined Score:{" "}
+              <span
+                className={`font-bold ${
+                  dualTaskBreakdown.combinedScore < 1500
+                    ? "text-green-400"
+                    : "text-red-400"
+                }`}
+              >
+                {dualTaskBreakdown.combinedScore}ms
+              </span>
+            </p>
+            <p className="text-xs text-gray-400">(Threshold: 1500ms)</p>
+            <p className="pt-2 text-xs text-gray-400">
+              Bounces: {dualTaskBreakdown.bounces} • Avg Interval:{" "}
+              {dualTaskBreakdown.avgInterval}ms
+            </p>
+          </div>
+        </div>
+      )}
+
       {resultOutcomes() === "green" ? (
         <>
           <h2 className="text-2xl font-semibold text-green-400">

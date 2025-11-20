@@ -3,6 +3,7 @@ import DecisionTest from "../components/games/DecisionTest";
 import ReactionTest from "../components/games/ReactionTest";
 import StroopTest from "../components/games/StroopTest";
 import PatternTest from "../components/games/PatternTest";
+import DualTaskTest from "../components/games/DualTaskTest";
 import { useTestLogic } from "../hooks/useTestLogic";
 import type { TestScore } from "../types";
 
@@ -12,11 +13,11 @@ const testComponents: Record<
   React.ComponentType<{ onComplete: (testScore: TestScore) => void }>
 > = {
   reaction: ReactionTest,
+  pattern: PatternTest,
   decision: DecisionTest,
   stroop: StroopTest,
-  pattern: PatternTest,
+  "dual-task": DualTaskTest,
   // Add future tests here:
-  // memory: MemoryTest,
   // coordination: CoordinationTest,
 };
 
