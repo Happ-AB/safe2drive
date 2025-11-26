@@ -16,10 +16,13 @@ export default function PersonalInput({ userData, setUserData }: Props) {
   const [gender, setGender] = useState(userData.gender || undefined);
 
   const handleSave = () => {
+    const ageNum = Number(age);
+    const weightNum = Number(weight);
+
     setUserData({
       ...userData,
-      age: Number(age),
-      weight: Number(weight),
+      age: ageNum,
+      weight: weightNum,
       gender,
     });
   };
@@ -29,18 +32,34 @@ export default function PersonalInput({ userData, setUserData }: Props) {
       <h2 className="text-lg font-semibold mb-4">Enter Your Details</h2>
       <div className="space-y-4">
         <Input
-          type="number"
+          type="text"
+          inputMode="numeric"
           value={age}
-          onChange={(e) => setAge(e.target.value)}
+          onChange={(e) => {
+            let value = e.target.value.replace(/\D/g, "");
+            if (value.startsWith("0")) {
+              value = value.replace(/^0+/, "");
+            }
+            setAge(value);
+          }}
           placeholder="Age"
           fullWidth
+          className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
         <Input
-          type="number"
+          type="text"
+          inputMode="numeric"
           value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          onChange={(e) => {
+            let value = e.target.value.replace(/\D/g, "");
+            if (value.startsWith("0")) {
+              value = value.replace(/^0+/, "");
+            }
+            setWeight(value);
+          }}
           placeholder="Weight (kg)"
           fullWidth
+          className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
         <Select
           value={gender}

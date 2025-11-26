@@ -1,7 +1,13 @@
 import type { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import clsx from "clsx";
 
-type Variant = "default" | "primary" | "secondary" | "ghost" | "danger";
+type Variant =
+  | "default"
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "danger"
+  | "success";
 type Size = "sm" | "md" | "lg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,6 +32,7 @@ export default function Button({
     secondary: "bg-secondary text-secondary-foreground hover:brightness-110",
     ghost: "bg-transparent hover:bg-white/10 border-transparent",
     danger: "bg-red-500 text-white hover:bg-red-600",
+    success: "bg-green-500 text-white hover:bg-green-600",
   };
   const sizeClasses: Record<Size, string> = {
     sm: "h-9 px-3 text-sm",

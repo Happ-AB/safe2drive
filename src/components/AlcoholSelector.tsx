@@ -95,7 +95,7 @@ export default function AlcoholSelector({ userData, setUserData }: Props) {
         <div className="flex items-center justify-center gap-4">
           <Button
             onClick={justAte}
-            variant={userData.meal ? "primary" : "default"}
+            variant={userData.meal ? "success" : "default"}
             className="w-20"
           >
             Yes
