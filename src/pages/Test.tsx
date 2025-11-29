@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import DecisionTest from "../components/games/DecisionTest";
 import ReactionTest from "../components/games/ReactionTest";
 import StroopTest from "../components/games/StroopTest";
+import NumberComparisonTest from "../components/games/NumberComparisonTest";
 import { useTestLogic } from "../hooks/useTestLogic";
 import type { TestScore } from "../types";
 
@@ -13,6 +14,7 @@ const testComponents: Record<
   reaction: ReactionTest,
   decision: DecisionTest,
   stroop: StroopTest,
+  "number-comparison": NumberComparisonTest,
   // Add future tests here:
   // coordination: CoordinationTest,
 };

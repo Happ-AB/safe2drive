@@ -9,8 +9,7 @@ const availableTests = [
   { name: "Reaction Test", key: "reaction" },
   { name: "Decision Test", key: "decision" },
   { name: "Stroop Test", key: "stroop" },
-  { name: "Pattern Test", key: "pattern" },
-  { name: "Dual Task Test", key: "dual-task" },
+  { name: "Number Comparison Test", key: "number-comparison" },
   // Add future tests here
 ];
 
@@ -22,9 +21,24 @@ export default function StartInfo() {
   } | null>(null);
 
   useEffect(() => {
-    // Randomly select a test when component mounts
-    const randomIndex = Math.floor(Math.random() * availableTests.length);
-    const test = availableTests[randomIndex];
+    // Check if debug test selection is set
+    const debugTestSelection = localStorage.getItem("debugTestSelection");
+
+    let test;
+    if (debugTestSelection && debugTestSelection !== "random") {
+      // Use the debug-selected test
+      test = availableTests.find((t) => t.key === debugTestSelection);
+      if (!test) {
+        // Fallback to random if invalid key
+        const randomIndex = Math.floor(Math.random() * availableTests.length);
+        test = availableTests[randomIndex];
+      }
+    } else {
+      // Randomly select a test when component mounts
+      const randomIndex = Math.floor(Math.random() * availableTests.length);
+      test = availableTests[randomIndex];
+    }
+
     setSelectedTest(test);
     // Store in localStorage so Test page can use it
     localStorage.setItem("selectedTest", JSON.stringify(test));

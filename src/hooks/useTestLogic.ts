@@ -14,19 +14,13 @@ export function useTestLogic() {
     } else if (testScore.testType === "stroop") {
       // For stroop tests: check if average time is under threshold
       passed = testScore.averageTime < TestConfig.stroop.passThreshold;
-    } else if (testScore.testType === "pattern") {
-      // For pattern tests: must get all answers correct AND be under time threshold
-      const allCorrect = testScore.correctAnswers === testScore.totalQuestions;
+    } else if (testScore.testType === "number-comparison") {
+      // For number comparison tests: must be under time threshold AND get enough correct
       const withinTime =
-        testScore.averageTime < TestConfig.pattern.passThreshold;
-      passed = allCorrect && withinTime;
-    } else if (testScore.testType === "dual-task") {
-      // For dual-task tests: must maintain rhythm consistency AND respond correctly to challenges
-      const withinTime =
-        testScore.averageTime < TestConfig["dual-task"].passThreshold;
+        testScore.averageTime < TestConfig["number-comparison"].passThreshold;
       const enoughCorrect =
         (testScore.correctAnswers || 0) >=
-        TestConfig["dual-task"].minCorrectAnswers;
+        TestConfig["number-comparison"].minCorrectAnswers;
       passed = withinTime && enoughCorrect;
     }
 

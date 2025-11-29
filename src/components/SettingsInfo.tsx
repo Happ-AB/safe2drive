@@ -1,8 +1,34 @@
+import { useState, useEffect } from "react";
 import { clearLocalStorage } from "../helpers/functions";
 import Card from "./ui/Card";
 import Button from "./ui/Button";
+import Select from "./ui/Select";
+
+const availableTests = [
+  { name: "Random (Default)", key: "random" },
+  { name: "Reaction Test", key: "reaction" },
+  { name: "Decision Test", key: "decision" },
+  { name: "Stroop Test", key: "stroop" },
+  { name: "Number Comparison Test", key: "number-comparison" },
+];
 
 export default function SettingsInfo() {
+  const [selectedTestKey, setSelectedTestKey] = useState("random");
+
+  useEffect(() => {
+    // Load saved test preference
+    const saved = localStorage.getItem("debugTestSelection");
+    if (saved) {
+      setSelectedTestKey(saved);
+    }
+  }, []);
+
+  const handleTestChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedTestKey(value);
+    localStorage.setItem("debugTestSelection", value);
+  };
+
   const handleResetData = () => {
     clearLocalStorage();
     window.location.href = "/";
@@ -30,6 +56,24 @@ export default function SettingsInfo() {
         <Button onClick={handleResetData} variant="danger">
           Reset Data
         </Button>
+      </div>
+      <div className="mb-6">
+        <h3 className="font-medium mb-2">Debug: Test Selection</h3>
+        <Select
+          value={selectedTestKey}
+          onChange={handleTestChange}
+          fullWidth
+          className="border rounded-md p-2 w-full text-base focus:outline-none focus:ring-2 focus:ring-primary transition"
+        >
+          {availableTests.map((test) => (
+            <option key={test.key} value={test.key}>
+              {test.name}
+            </option>
+          ))}
+        </Select>
+        <p className="text-xs text-muted mt-1">
+          For testing purposes. Select "Random" for normal behavior.
+        </p>
       </div>
       <div>
         <h3 className="font-medium">About</h3>
